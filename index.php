@@ -138,15 +138,14 @@ class LinkParser
         return $array_of_kveds;
     }
 
-    function sortEmailsAndUrl($array_of_links)
+    function sortEmailsAndUrl($array_of_links, $kved_file_urls)
     {
-//        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1",
-//            $kved_file_urls) : $this->file_urls;
-
+        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1",
+            $kved_file_urls) : $this->file_urls;
 //        echo '<p>Getting emails and URLs...</p>';
 //        $array_of_url = preg_grep("/(https?:\/\/[^plus][\w]+\.[^ua|fac]+)|(mailto:(?!info))|(^[/][/\d]+\z)/", $array_of_links);
         $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-regi[\w.]+|facebook|twitter)|vk|plus.google))|(mailto:(?!info))|(^[\/][\/\d]+\z)/", $array_of_links);
-        if (!file_put_contents($this->download_folder . $this->file_urls, implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
+        if (!file_put_contents($this->download_folder . "$kved_file_urls.txt", implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
             file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND);
         };
         return $array_of_url;
@@ -176,7 +175,7 @@ class LinkParser
             $dom = $this->getDom($html);
             $arr_of_companies = $this->getLinks($dom);
             $h2 = $this->getH2ofCompanies($dom);
-            $links = $this->sortEmailsAndUrl($arr_of_companies);
+            $links = $this->sortEmailsAndUrl($arr_of_companies, $kved);
             var_dump($links);
             if ($h2 == 0) {
                 break;
@@ -198,8 +197,10 @@ $first_url = 'https://www.ua-region.info/kved/';
  * @var string Additional param 4 pager, recurse get pages
  */
 $pager_param = '?start_page=';
-$lP = new LinkParser($parcing_site, $first_url, $pager_param);
+
+$lP = new LinkParser($parcing_site, $first_url, $pager_param,$i);
 $arr_of_kveds = $lP->init($first_url);
+//$i++;
 if (count($arr_of_kveds) > 0) {
     foreach ($arr_of_kveds as $kved) {
         $lP->recurseKvedArray($kved);
