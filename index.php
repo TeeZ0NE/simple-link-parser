@@ -196,8 +196,8 @@ $first_url = 'https://www.ua-region.info/kved/';
  * @var string Additional param 4 pager, recurse get pages
  */
 $pager_param = '?start_page=';
-
-$lP = new LinkParser($parcing_site, $first_url, $pager_param,$i);
+echo "<p>Parse: $parcing_site</p>";
+$lP = new LinkParser($parcing_site, $first_url, $pager_param);
 $arr_of_kveds = $lP->init($first_url);
 //$i++;
 if (count($arr_of_kveds) > 0) {
