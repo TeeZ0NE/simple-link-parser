@@ -177,7 +177,7 @@ class LinkParser
 //            $kved = reset($array_of_kveds);
         for ($i = 1; ; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
-            echo "$url<br>";
+            echo "<p><i>$url</i></p>";
             $html = $this->getHtml($url);
             $dom = $this->getDom($html);
             $arr_of_companies = $this->getLinks($dom);
@@ -199,7 +199,7 @@ class LinkParser
         if (file_exists($this->download_folder . $this->file_kveds)) {
             return True;
         } else {
-            echo "<p>File Kveds <strong>doesn't exists</strong></p>";
+            echo "<p>File Kveds <b>doesn't exists</b></p>";
             return False;
         }
     }
@@ -232,21 +232,26 @@ $LP = new LinkParser();
 
 if ($start_index and $LP->existingKvedFile()) {
     $kveds = $LP->getKvedFile();
+    if (count($kveds) == 0) {
+        die('<p>Error with Kved file</p>');
+    }
     if (key_exists($start_index, $kveds)) {
-        if($end_index AND key_exists($end_index,$kveds)) {
+        if ($end_index AND key_exists($end_index, $kveds)) {
             echo "<h3>Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
             for ($i = $start_index; $i <= $end_index; $i++) {
                 $LP->recurseKvedArray($kveds[$i]);
+                echo "<p>$kveds[$i] <b>done</b></p>";
             }
-        }else{
+        } else {
             echo "<h3>Parse from $kveds[$start_index]</h3>";
             $LP->recurseKvedArray($kveds[$start_index]);
+            echo "<p>$kveds[$start_index] <b>done</b></p>";
         }
-        echo "<p><strong>Well done</strong></p>";
+        echo "<p><b>Well done</b></p>";
     } else {
-        die("<p><strong>$start_index</strong> doesn't exist</p>");
+        die("<p><b>$start_index</b> doesn't exist</p>");
     }
-   
+
 
 } else //new request
 {
@@ -255,6 +260,7 @@ if ($start_index and $LP->existingKvedFile()) {
     if (count($arr_of_kveds) > 0) {
         foreach ($arr_of_kveds as $kved) {
             $LP->recurseKvedArray($kved);
+            echo "<p>$kved <b>done</b></p>";
         }
         echo '<p>Kveds stored. Add <pre>?start_index=7007</pre> to display results</p>';
     } else echo '<p>Nothing do here</p>';
