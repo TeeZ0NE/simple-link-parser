@@ -3,20 +3,18 @@
 
 class LinkParser
 {
-
     /**
      * @var string  what we parce
      */
-    private $parcing_site;
+    public $parcing_site = 'https://www.ua-region.info';
     /**
      * @var string url where are categories
      */
-    private $first_url;
+    public $first_url = 'https://www.ua-region.info/kved/';
     /**
      * @var string Additional param 4 pager, recurse get pages
      */
-    private $pager_param;
-
+    public $pager_param = '?start_page=';
     /**
      * @var array of catalogs (kveds)
      */
@@ -48,11 +46,8 @@ class LinkParser
 
 //// print_r($html);
 
-    public function __construct($parcing_site, $first_url, $pager_param)
+    public function __construct()
     {
-        $this->parcing_site = $parcing_site;
-        $this->first_url = $first_url;
-        $this->pager_param = $pager_param;
         include('simplehtmldom_1_5/simple_html_dom.php');
         include('getcurl.php');
     }
@@ -133,8 +128,8 @@ class LinkParser
 //        echo '<p>Sorting Categories (kveds)...</p>';
         $kveds = array();
         $array_of_kveds = preg_grep("/^[\/]kved\/[\w\d]+\./", $array_of_links);
-        foreach ($array_of_kveds as $kved){
-            $kveds[]=$kved;
+        foreach ($array_of_kveds as $kved) {
+            $kveds[] = $kved;
         }
         if (!file_put_contents($this->download_folder . $this->file_kveds, json_encode($kveds))) {
             file_put_contents($this->download_folder . $this->file_logs, 'kved not wrote.' . PHP_EOL, FILE_APPEND);
@@ -142,6 +137,11 @@ class LinkParser
         return $kveds;
     }
 
+    /**
+     * sorting emails and url
+     * @param $array_of_links
+     * @return array
+     */
     function sortEmailsAndUrl($array_of_links)
     {
 //        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1", $kved_file_urls) : $this->file_urls;
@@ -167,11 +167,16 @@ class LinkParser
 //        $this->recurseKvedArray($array_of_kveds);
     }
 
+    /**
+     * recursing in pages in kved category
+     * @param $kved
+     */
     function recurseKvedArray($kved)
     {
 //        echo '<p>Kveds recurse started...</p>';
 //            $kved = reset($array_of_kveds);
-        for ($i = 1; ; $i++) {
+        echo('e');
+        for ($i = 1; $i <= 2; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
             echo "$url<br>";
             $html = $this->getHtml($url);
@@ -185,30 +190,64 @@ class LinkParser
             }
         }
     }
+
+    /**
+     * does kved file exist's
+     * @return bool
+     */
+    public function existingKvedFile()
+    {
+        if (file_exists($this->download_folder . $this->file_kveds)) {
+            return True;
+        } else {
+            echo "<p>File Kveds <strong>doesn't exists</strong></p>";
+            return False;
+        }
+    }
+
+    /**
+     * getting Kved file if exist
+     * @return array|mixed
+     */
+    public function getKvedFile()
+    {
+        $kveds = array();
+        if ($this->existingKvedFile()) {
+            try {
+                $kveds = json_decode(file_get_contents('download/kveds.json'), true);
+                print_r($kveds);
+            } catch (Exception $e) {
+                echo "<p>$e</p>";
+            }
+        }
+        return $kveds;
+    }
 }
 
 // LET'S FUNNY
-/**
- * @var string  what we parce
- */
-$parcing_site = 'https://www.ua-region.info';
-/**
- * @var string url where are categories
- */
-$first_url = 'https://www.ua-region.info/kved/';
-/**
- * @var string Additional param 4 pager, recurse get pages
- */
-$pager_param = '?start_page=';
-$start_index =  $_GET['start-index'];
-echo "<p>Parse: $parcing_site</p>";
-$lP = new LinkParser($parcing_site, $first_url, $pager_param);
-$arr_of_kveds = $lP->init($first_url);
-//$i++;
-if (count($arr_of_kveds) > 0) {
-    foreach ($arr_of_kveds as $kved) {
-        $lP->recurseKvedArray($kved);
+
+$start_index = $_GET['start_index'];
+$LP = new LinkParser();
+// file with kveds exists
+if ($start_index and $LP->existingKvedFile()) {
+    $kveds = $LP->getKvedFile();
+    if (key_exists($start_index, $kveds)) {
+        echo "<h3>Parse $kveds[$start_index]</h3>";
+        $LP->recurseKvedArray($kveds[$start_index]);
+        echo "<p>Well done</p>";
+    } else {
+        die("<p><strong>$start_index</strong> doesn't exist</p>");
     }
-    echo 'well done';
-} else echo '<p>Nothing do here</p>';
+
+} else //new request
+{
+    $arr_of_kveds = $LP->init($LP->first_url);
+//$i++;
+    if (count($arr_of_kveds) > 0) {
+       /* foreach ($arr_of_kveds as $kved) {
+            $LP->recurseKvedArray($kved);
+        }*/
+        echo '<p>Kveds stored. Add <pre>?start_index=7007</pre> to display results</p>';
+    } else echo '<p>Nothing do here</p>';
+}
 
