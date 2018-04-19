@@ -30,6 +30,6 @@
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $set_ssl);
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $set_ssl);
   $html = curl_exec($ch);
-  curl_close();
+  curl_close($ch);
   return $html;
 }
