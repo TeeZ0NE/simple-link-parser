@@ -175,7 +175,6 @@ class LinkParser
     {
 //        echo '<p>Kveds recurse started...</p>';
 //            $kved = reset($array_of_kveds);
-        echo('e');
         for ($i = 1; ; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
             echo "$url<br>";
