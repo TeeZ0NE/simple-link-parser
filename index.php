@@ -233,9 +233,16 @@ $LP = new LinkParser();
 if ($start_index and $LP->existingKvedFile()) {
     $kveds = $LP->getKvedFile();
     if (key_exists($start_index, $kveds)) {
-        echo "<h3>Parse $kveds[$start_index]</h3>";
-        $LP->recurseKvedArray($kveds[$start_index]);
-        echo "<p>Well done</p>";
+        if($end_index AND key_exists($end_index,$kveds)) {
+            echo "<h3>Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
+            for ($i = $start_index; $i <= $end_index; $i++) {
+                $LP->recurseKvedArray($kveds[$i]);
+            }
+        }else{
+            echo "<h3>Parse from $kveds[$start_index]</h3>";
+            $LP->recurseKvedArray($kveds[$start_index]);
+        }
+        echo "<p><strong>Well done</strong></p>";
     } else {
         die("<p><strong>$start_index</strong> doesn't exist</p>");
     }
