@@ -176,7 +176,7 @@ class LinkParser
 //        echo '<p>Kveds recurse started...</p>';
 //            $kved = reset($array_of_kveds);
         echo('e');
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; ; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
             echo "$url<br>";
             $html = $this->getHtml($url);
@@ -227,8 +227,10 @@ class LinkParser
 // LET'S FUNNY
 
 $start_index = $_GET['start_index'];
+$end_index = $_GET['end_index'];
 $LP = new LinkParser();
 // file with kveds exists
+
 if ($start_index and $LP->existingKvedFile()) {
     $kveds = $LP->getKvedFile();
     if (key_exists($start_index, $kveds)) {
@@ -238,15 +240,16 @@ if ($start_index and $LP->existingKvedFile()) {
     } else {
         die("<p><strong>$start_index</strong> doesn't exist</p>");
     }
+   
 
 } else //new request
 {
     $arr_of_kveds = $LP->init($LP->first_url);
 //$i++;
     if (count($arr_of_kveds) > 0) {
-       /* foreach ($arr_of_kveds as $kved) {
+        foreach ($arr_of_kveds as $kved) {
             $LP->recurseKvedArray($kved);
-        }*/
+        }
         echo '<p>Kveds stored. Add <pre>?start_index=7007</pre> to display results</p>';
     } else echo '<p>Nothing do here</p>';
 }
