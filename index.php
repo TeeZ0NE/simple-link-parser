@@ -138,14 +138,13 @@ class LinkParser
         return $array_of_kveds;
     }
 
-    function sortEmailsAndUrl($array_of_links, $kved_file_urls)
+    function sortEmailsAndUrl($array_of_links)
     {
-        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1",
-            $kved_file_urls) : $this->file_urls;
+//        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1", $kved_file_urls) : $this->file_urls;
 //        echo '<p>Getting emails and URLs...</p>';
 //        $array_of_url = preg_grep("/(https?:\/\/[^plus][\w]+\.[^ua|fac]+)|(mailto:(?!info))|(^[/][/\d]+\z)/", $array_of_links);
         $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-regi[\w.]+|facebook|twitter)|vk|plus.google))|(mailto:(?!info))|(^[\/][\/\d]+\z)/", $array_of_links);
-        if (!file_put_contents($this->download_folder . "$kved_file_urls.txt", implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
+        if (!file_put_contents($this->download_folder . "$this->file_urls", implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
             file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND);
         };
         return $array_of_url;
@@ -175,7 +174,7 @@ class LinkParser
             $dom = $this->getDom($html);
             $arr_of_companies = $this->getLinks($dom);
             $h2 = $this->getH2ofCompanies($dom);
-            $links = $this->sortEmailsAndUrl($arr_of_companies, $kved);
+            $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
             if ($h2 == 0) {
                 break;
