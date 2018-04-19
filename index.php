@@ -131,11 +131,15 @@ class LinkParser
     function sortKveds($array_of_links)
     {
 //        echo '<p>Sorting Categories (kveds)...</p>';
+        $kveds = array();
         $array_of_kveds = preg_grep("/^[\/]kved\/[\w\d]+\./", $array_of_links);
-        if (!file_put_contents($this->download_folder . $this->file_kveds, json_encode($array_of_kveds))) {
+        foreach ($array_of_kveds as $kved){
+            $kveds[]=$kved;
+        }
+        if (!file_put_contents($this->download_folder . $this->file_kveds, json_encode($kveds))) {
             file_put_contents($this->download_folder . $this->file_logs, 'kved not wrote.' . PHP_EOL, FILE_APPEND);
         };
-        return $array_of_kveds;
+        return $kveds;
     }
 
     function sortEmailsAndUrl($array_of_links)
@@ -196,6 +200,7 @@ $first_url = 'https://www.ua-region.info/kved/';
  * @var string Additional param 4 pager, recurse get pages
  */
 $pager_param = '?start_page=';
+$start_index =  $_GET['start-index'];
 echo "<p>Parse: $parcing_site</p>";
 $lP = new LinkParser($parcing_site, $first_url, $pager_param);
 $arr_of_kveds = $lP->init($first_url);
