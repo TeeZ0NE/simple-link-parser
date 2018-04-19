@@ -131,20 +131,22 @@ class LinkParser
     function sortKveds($array_of_links)
     {
 //        echo '<p>Sorting Categories (kveds)...</p>';
-        $array_of_kveds = preg_grep("/\/kved\/[\w]+.[\d]+.[\d]+/", $array_of_links);
+        $array_of_kveds = preg_grep("/^[\/]kved\/[\w\d]+\./", $array_of_links);
         if (!file_put_contents($this->download_folder . $this->file_kveds, json_encode($array_of_kveds))) {
             file_put_contents($this->download_folder . $this->file_logs, 'kved not wrote.' . PHP_EOL, FILE_APPEND);
         };
         return $array_of_kveds;
     }
 
-    function sortEmailsAndUrl($array_of_links, $kved_file_urls)
+    function sortEmailsAndUrl($array_of_links)
     {
-        $kved_file_urls = ($kved_file_urls) ? $kved_file_urls : $this->file_urls;
+//        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1",
+//            $kved_file_urls) : $this->file_urls;
+
 //        echo '<p>Getting emails and URLs...</p>';
 //        $array_of_url = preg_grep("/(https?:\/\/[^plus][\w]+\.[^ua|fac]+)|(mailto:(?!info))|(^[/][/\d]+\z)/", $array_of_links);
         $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-regi[\w.]+|facebook|twitter)|vk|plus.google))|(mailto:(?!info))|(^[\/][\/\d]+\z)/", $array_of_links);
-        if (!file_put_contents($this->download_folder . $kved_file_urls.'.txt', implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
+        if (!file_put_contents($this->download_folder . $this->file_urls, implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
             file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND);
         };
         return $array_of_url;
@@ -169,12 +171,12 @@ class LinkParser
 //            $kved = reset($array_of_kveds);
         for ($i = 1; $i <= 2; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
-            echo $url . '<br>';
+            echo "$url<br>";
             $html = $this->getHtml($url);
             $dom = $this->getDom($html);
             $arr_of_companies = $this->getLinks($dom);
             $h2 = $this->getH2ofCompanies($dom);
-            $links = $this->sortEmailsAndUrl($arr_of_companies, $kved);
+            $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
             if ($h2 == 0) {
                 break;
@@ -196,12 +198,11 @@ $first_url = 'https://www.ua-region.info/kved/';
  * @var string Additional param 4 pager, recurse get pages
  */
 $pager_param = '?start_page=';
-$i = 1;
-$lP[$i] = new LinkParser($parcing_site, $first_url, $pager_param);
-$arr_of_kveds = $lP[$i]->init($first_url);
+$lP = new LinkParser($parcing_site, $first_url, $pager_param);
+$arr_of_kveds = $lP->init($first_url);
 if (count($arr_of_kveds) > 0) {
     foreach ($arr_of_kveds as $kved) {
-        $lP[$i]->recurseKvedArray($kved);
+        $lP->recurseKvedArray($kved);
     }
     echo 'well done';
 } else echo '<p>Nothing do here</p>';
