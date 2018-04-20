@@ -61,6 +61,7 @@ class LinkParser
     {
 //        echo '<p>Getting HTML...</p>';
         $html = curl_get($url);
+        print_r($html);die();
         return $html;
     }
 

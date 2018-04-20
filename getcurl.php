@@ -20,7 +20,6 @@
   $set_ssl = false)
  {
   $ch = curl_init();
-  echo $ch;
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_HEADER, $get_header);
   curl_setopt($ch, CURLOPT_NOBODY, $set_nobody);
