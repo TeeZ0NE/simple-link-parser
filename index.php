@@ -43,6 +43,10 @@ class LinkParser
      * @var string file. log file
      */
     private $file_logs = "log.txt";
+    /**
+     * @var int time before next page
+     */
+    private $sleep_time = 120;
 
 //// print_r($html);
 
@@ -61,7 +65,6 @@ class LinkParser
     {
 //        echo '<p>Getting HTML...</p>';
         $html = curl_get($url);
-        print_r($html);die();
         return $html;
     }
 
@@ -176,7 +179,7 @@ class LinkParser
     {
 //        echo '<p>Kveds recurse started...</p>';
 //            $kved = reset($array_of_kveds);
-        for ($i = 1; ; $i++) {
+        for ($i = 1; $i<=2; $i++) {
             $url = $this->parcing_site . $kved . $this->pager_param . $i;
             echo "<p><i>$url</i></p>";
             $html = $this->getHtml($url);
@@ -185,6 +188,8 @@ class LinkParser
             $h2 = $this->getH2ofCompanies($dom);
             $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
+            echo "<p>Sleep $this->sleep_time - ".date('h:i:s')."</p>";
+            sleep($this->sleep_time);
             if ($h2 == 0) {
                 echo "<p>Count of h2 is 0</p>";
                 break;
@@ -230,6 +235,7 @@ class LinkParser
 $start_index = $_GET['start_index'];
 $end_index = $_GET['end_index'];
 $LP = new LinkParser();
+$sleep_time = 330;
 // file with kveds exists
 
 if ($start_index and $LP->existingKvedFile()) {
@@ -242,7 +248,8 @@ if ($start_index and $LP->existingKvedFile()) {
             echo "<h3>Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
             for ($i = $start_index; $i <= $end_index; $i++) {
                 $LP->recurseKvedArray($kveds[$i]);
-                echo "<p>$kveds[$i] <b>done</b></p>";
+                sleep($sleep_time);
+                echo "<p>$kveds[$i] <b>done</b>. Sleep $sleep_time - ".date('h:m:s')."</p>";
             }
         } else {
             echo "<h3>Parse from $kveds[$start_index]</h3>";
@@ -258,12 +265,11 @@ if ($start_index and $LP->existingKvedFile()) {
 } else //new request
 {
     $arr_of_kveds = $LP->init($LP->first_url);
-    print_r($arr_of_kveds);die();
-//$i++;
     if (count($arr_of_kveds) > 0) {
         foreach ($arr_of_kveds as $kved) {
             $LP->recurseKvedArray($kved);
-            echo "<p>$kved <b>done</b></p>";
+            sleep($sleep_time);
+            echo "<p>$kved <b>done</b>. Sleep $sleep_time - ".date('h:m:s')."</p>";
         }
         echo '<p>Kveds stored. Add <pre>?start_index=7007</pre> to display results</p>';
     } else echo '<p>Nothing do here</p>';
