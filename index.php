@@ -257,6 +257,7 @@ if ($start_index and $LP->existingKvedFile()) {
 } else //new request
 {
     $arr_of_kveds = $LP->init($LP->first_url);
+    print_r($arr_of_kveds);die();
 //$i++;
     if (count($arr_of_kveds) > 0) {
         foreach ($arr_of_kveds as $kved) {
