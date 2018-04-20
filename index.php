@@ -185,6 +185,7 @@ class LinkParser
             $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
             if ($h2 == 0) {
+                echo "<p>Count of h2 is 0</p>";
                 break;
             }
         }
