@@ -147,7 +147,7 @@ class LinkParser
 //        $kved_file_urls = ($kved_file_urls) ? preg_replace("/[\/.-:](?:[a-zA-Z]+)[\/.-:]([a-zA-z]+)/", "$1", $kved_file_urls) : $this->file_urls;
 //        echo '<p>Getting emails and URLs...</p>';
 //        $array_of_url = preg_grep("/(https?:\/\/[^plus][\w]+\.[^ua|fac]+)|(mailto:(?!info))|(^[/][/\d]+\z)/", $array_of_links);
-        $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-regi[\w.]+|facebook|twitter)|vk|plus.google))|(mailto:(?!info))|(^[\/][\/\d]+\z)/", $array_of_links);
+        $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-region[\w.]+|facebook|twitter)|vk|plus.google))|        (mailto:(?!(?:info|admin)@ua-region))|(^[\/][\/\d]+\z)/", $array_of_links);
         if (!file_put_contents($this->download_folder . "$this->file_urls", implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
             file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND);
         };
