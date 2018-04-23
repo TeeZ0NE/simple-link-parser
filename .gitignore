@@ -1,3 +1,4 @@
 download/*.txt
+download/
 download/*.json
 .idea/
