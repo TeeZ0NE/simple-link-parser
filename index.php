@@ -232,8 +232,9 @@ class LinkParser
 
 // LET'S FUNNY
 
-$start_index = $_GET['start_index'];
-$end_index = $_GET['end_index'];
+
+$start_index = isset($argv[1])?$argv[1]:$_GET['start_index'];
+$end_index = isset($argv[2])?$argv[2]:$_GET['end_index'];
 $LP = new LinkParser();
 $sleep_time = 330;
 // file with kveds exists
