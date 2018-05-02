@@ -247,7 +247,7 @@ if ($start_index and $LP->existingKvedFile()) {
     }
     if (key_exists($start_index, $kveds)) {
         if ($end_index AND key_exists($end_index, $kveds)) {
-            echo "<h3>Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
+            echo "<hr><h3><small>date('F-d-H:i')</small> Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
             for ($i = $start_index; $i <= $end_index; $i++) {
                 $LP->recurseKvedArray($kveds[$i]);
                 sleep($sleep_time);
