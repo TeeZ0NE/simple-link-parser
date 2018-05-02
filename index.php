@@ -189,7 +189,7 @@ class LinkParser
             $h2 = $this->getH2ofCompanies($dom);
             $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
-            echo "<p>Sleep $this->sleep_time - ".date('h:i:s')."</p>";
+            echo "<p>Sleep $this->sleep_time - ".date('F-d-H:i:s')."</p>";
             sleep($this->sleep_time);
             if ($h2 == 0) {
                 echo "<p>Count of h2 is 0</p>";
@@ -251,7 +251,7 @@ if ($start_index and $LP->existingKvedFile()) {
             for ($i = $start_index; $i <= $end_index; $i++) {
                 $LP->recurseKvedArray($kveds[$i]);
                 sleep($sleep_time);
-                echo "<p>$kveds[$i] <b>done</b>. Sleep $sleep_time - ".date('h:m:s')."</p>";
+                echo "<p>$kveds[$i] <b>done</b>. Sleep $sleep_time - ".date('F-d-H:i:s')."</p>";
             }
         } else {
             echo "<h3>Parse from $kveds[$start_index]</h3>";
@@ -271,7 +271,7 @@ if ($start_index and $LP->existingKvedFile()) {
         foreach ($arr_of_kveds as $kved) {
             $LP->recurseKvedArray($kved);
             sleep($sleep_time);
-            echo "<p>$kved <b>done</b>. Sleep $sleep_time - ".date('h:m:s')."</p>";
+            echo "<p>$kved <b>done</b>. Sleep $sleep_time - ".date('F-d-H:i:s')."</p>";
         }
         echo '<p>Kveds stored. Add <pre>?start_index=7007</pre> to display results</p>';
     } else echo '<p>Nothing do here</p>';
