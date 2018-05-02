@@ -46,7 +46,7 @@ class LinkParser
     /**
      * @var int time before next page
      */
-    private $sleep_time = 120;
+    private $sleep_time;
 
 //// print_r($html);
 
@@ -54,6 +54,7 @@ class LinkParser
     {
         include('simplehtmldom_1_5/simple_html_dom.php');
         include('getcurl.php');
+        $this->sleep_time = rand(85,122);
     }
 
     /**
@@ -236,7 +237,7 @@ class LinkParser
 $start_index = isset($argv[1])?$argv[1]:$_GET['start_index'];
 $end_index = isset($argv[2])?$argv[2]:$_GET['end_index'];
 $LP = new LinkParser();
-$sleep_time = 330;
+$sleep_time = rand(90,130);
 // file with kveds exists
 
 if ($start_index and $LP->existingKvedFile()) {
