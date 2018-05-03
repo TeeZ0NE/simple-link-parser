@@ -237,7 +237,7 @@ class LinkParser
 $start_index = isset($argv[1])?$argv[1]:$_GET['start_index'];
 $end_index = isset($argv[2])?$argv[2]:$_GET['end_index'];
 $LP = new LinkParser();
-$sleep_time = rand(90,130);
+
 // file with kveds exists
 
 if ($start_index and $LP->existingKvedFile()) {
@@ -250,8 +250,9 @@ if ($start_index and $LP->existingKvedFile()) {
             echo "<hr><h3><small>".date('F-d-H:i')."</small> Parse from $kveds[$start_index] to $kveds[$end_index]</h3>";
             for ($i = $start_index; $i <= $end_index; $i++) {
                 $LP->recurseKvedArray($kveds[$i]);
+                $sleep_time = rand(90,130);
                 sleep($sleep_time);
-                echo "<p>$kveds[$i] <b>done</b>. Sleep $sleep_time - ".date('F-d-H:i:s')."</p>";
+                echo "<p>$kveds[$i] <b>done</b>. Sleeped $sleep_time - ".date('F-d-H:i:s')."&nbs;<em>$i from $end_index</em></p>";
             }
         } else {
             echo "<h3>Parse from $kveds[$start_index]</h3>";
@@ -270,6 +271,7 @@ if ($start_index and $LP->existingKvedFile()) {
     if (count($arr_of_kveds) > 0) {
         foreach ($arr_of_kveds as $kved) {
             $LP->recurseKvedArray($kved);
+            $sleep_time = rand(90,130);
             sleep($sleep_time);
             echo "<p>$kved <b>done</b>. Sleep $sleep_time - ".date('F-d-H:i:s')."</p>";
         }
