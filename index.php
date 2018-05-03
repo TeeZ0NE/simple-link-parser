@@ -46,7 +46,7 @@ class LinkParser
     /**
      * @var int time before next page
      */
-    private $sleep_time;
+    // private $sleep_time;
 
 //// print_r($html);
 
@@ -54,7 +54,6 @@ class LinkParser
     {
         include('simplehtmldom_1_5/simple_html_dom.php');
         include('getcurl.php');
-        $this->sleep_time = rand(85,122);
     }
 
     /**
@@ -189,8 +188,9 @@ class LinkParser
             $h2 = $this->getH2ofCompanies($dom);
             $links = $this->sortEmailsAndUrl($arr_of_companies);
             var_dump($links);
-            echo "<p>Sleep $this->sleep_time - ".date('F-d-H:i:s')."</p>";
-            sleep($this->sleep_time);
+            $sleep_time = rand(80,122);
+            echo "<p>Sleep $sleep_time - ".date('F-d-H:i:s')."</p>";
+            sleep($sleep_time);
             if ($h2 == 0) {
                 echo "<p>Count of h2 is 0</p>";
                 break;
