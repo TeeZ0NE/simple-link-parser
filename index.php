@@ -52,8 +52,8 @@ class LinkParser
 
     public function __construct()
     {
-        include('simplehtmldom_1_5/simple_html_dom.php');
-        include('getcurl.php');
+        include_once('simplehtmldom_1_5/simple_html_dom.php');
+        include_once('getcurl.php');
     }
 
     /**
@@ -136,7 +136,7 @@ class LinkParser
             $kveds[] = $kved;
         }
         if (!file_put_contents($this->download_folder . $this->file_kveds, json_encode($kveds))) {
-            file_put_contents($this->download_folder . $this->file_logs, 'kved not wrote.' . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->download_folder . $this->file_logs, 'kved not wrote.' . PHP_EOL, FILE_APPEND | LOCK_EX);
         };
         return $kveds;
     }
@@ -152,8 +152,8 @@ class LinkParser
 //        echo '<p>Getting emails and URLs...</p>';
 //        $array_of_url = preg_grep("/(https?:\/\/[^plus][\w]+\.[^ua|fac]+)|(mailto:(?!info))|(^[/][/\d]+\z)/", $array_of_links);
         $array_of_url = preg_grep("/(https?:\/\/(?!(?:www.)?(?:ua-region[\w.]+|facebook|twitter)|vk|plus.google))|(mailto:(?!(?:info|admin)@ua-region))|(^[\/][\/\d]+\z)/", $array_of_links);
-        if (!file_put_contents($this->download_folder . "$this->file_urls", implode(PHP_EOL, $array_of_url), FILE_APPEND)) {
-            file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND);
+        if (!file_put_contents($this->download_folder . "$this->file_urls", implode(PHP_EOL, $array_of_url), FILE_APPEND | LOCK_EX)) {
+            file_put_contents($this->download_folder . $this->file_logs, 'url not wrote. ' . PHP_EOL, FILE_APPEND | LOCK_EX);
         };
         return $array_of_url;
     }
@@ -252,7 +252,7 @@ if ($start_index and $LP->existingKvedFile()) {
                 $LP->recurseKvedArray($kveds[$i]);
                 $sleep_time = rand(90,130);
                 sleep($sleep_time);
-                echo "<p>$kveds[$i] <b>done</b>. Sleeped $sleep_time - ".date('F-d-H:i:s')."&nbs;<em>$i from $end_index</em></p>";
+                echo "<p>$kveds[$i] <b>done</b>. Sleeped $sleep_time - ".date('F-d-H:i:s')."&nbsp;<em>$i from $end_index</em></p>";
             }
         } else {
             echo "<h3>Parse from $kveds[$start_index]</h3>";
