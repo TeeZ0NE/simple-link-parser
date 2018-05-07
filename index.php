@@ -89,11 +89,13 @@ class LinkParser
     {
 //        echo '<p>Searching 4 links...</p>';
         $array_of_links = array();
-        foreach ($dom->find('a') as $e) {
-            $href_url = $e->href;
-            $array_of_links[] = $href_url;
+        if(!empty($dom)) {
+            foreach ($dom->find('a') as $e) {
+                $href_url = $e->href;
+                $array_of_links[] = $href_url;
 //            echo $href_url . '<br>';
 ///  if(!file_exists('download/'.$imagename)){copy($imgurl,"download/$imagename");}
+            }
         }
         return $array_of_links;
     }
