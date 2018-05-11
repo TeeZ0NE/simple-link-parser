@@ -198,7 +198,7 @@ class LinkParser
 				}
 			} else {
 				file_put_contents($this->download_folder . $this->file_logs, "<p>$kved Array is empty</p>", FILE_APPEND | LOCK_EX);
-				break;
+				continue;
 			}
 		}
 	}
