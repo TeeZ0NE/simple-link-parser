@@ -6,7 +6,7 @@ class LinkParser
 	/**
 	 * @var string  what we parce
 	 */
-	public $url = 'https://www.google.com.ua/search?q=site:.org.ua&num=10';
+	public $url = 'https://www.google.com.ua/search?q=site:.org.ua&num=100';
 	/**
 	 * @var string Additional param 4 pager, recurse get pages
 	 */
@@ -107,7 +107,9 @@ class LinkParser
 		# TODO: debug section
 //		$sorted_links = $this->sortUrl($array_of_links);
 		var_dump($sorted_links);
-		$this->nextPage();
+		if (count($sorted_links[0])) {
+			$this->nextPage();
+		} else die('In init section count is 0');
 	}
 
 	/**
