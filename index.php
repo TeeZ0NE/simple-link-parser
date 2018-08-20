@@ -6,11 +6,11 @@ class LinkParser
 	/**
 	 * @var string  what we parce
 	 */
-	public $url = 'https://www.google.com.ua/search?q=site:.vn.ua&num=100';
+	public $url = 'https://www.google.com.ua/search?q=site:.gov.ua&num=100';
 	/**
 	 * @var string Additional param 4 pager, recurse get pages
 	 */
-	private $search_mask = "/https?:\/\/(?:www\.)?[-0-9a-zа-я\.]+.vn.ua/i";
+	private $search_mask = "/https?:\/\/(?:www\.)?[-0-9a-zа-я\.]+.gov.ua/i";
 	/**
 	 * @var string param which uses 4 step 2 another page
 	 */
@@ -26,7 +26,7 @@ class LinkParser
 	/**
 	 * @var string  where storing data with URLs and emails
 	 */
-	private $file_urls = "urls.txt";
+	private $file_urls = "urls-govua.txt";
 	/**
 	 * @var string file. log file
 	 */

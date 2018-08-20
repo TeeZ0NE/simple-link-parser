@@ -1,0 +1,7 @@
+Options All  +Indexes
+AuthType Basic
+AuthName "simpleparser"
+AuthUserFile /var/www/dev/data/www/dev.hyperdomen.com/slp/dowload/.htpasswd
+Require valid-user
+Order deny,allow
+Allow from all
