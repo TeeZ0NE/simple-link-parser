@@ -10,7 +10,7 @@ class LinkParser
 	/**
 	 * @var string Additional param 4 pager, recurse get pages
 	 */
-	private $search_mask = "/https?:\/\/(?:www\.)?[-0-9a-zа-я\.]+.gov.ua/i";
+	private $search_mask = "/(?:https?:\/\/)?(?:www\.)?[-\d\wа-яі\._]+.gov.ua/i";
 	/**
 	 * @var string param which uses 4 step 2 another page
 	 */
