@@ -6,11 +6,11 @@ class LinkParser
 	/**
 	 * @var string  what we parce
 	 */
-	public $url = 'https://www.google.com.ua/search?q=site:.gov.ua&num=100';
+	public $url = 'https://www.google.com.ua/search?q=site:.edu.ua&num=100';
 	/**
 	 * @var string Additional param 4 pager, recurse get pages
 	 */
-	private $search_mask = "/(?:https?:\/\/)?(?:www\.)?[-\d\wа-яі\._]+.gov.ua/i";
+	private $search_mask = "/(?:https?:\/\/)?(?:www\.)?[-\d\wа-яі\._]+.edu.ua/i";
 	/**
 	 * @var string param which uses 4 step 2 another page
 	 */
@@ -26,7 +26,7 @@ class LinkParser
 	/**
 	 * @var string  where storing data with URLs and emails
 	 */
-	private $file_urls = "urls-govua.txt";
+	private $file_urls = "urls-eduua.txt";
 	/**
 	 * @var string file. log file
 	 */
@@ -39,7 +39,7 @@ class LinkParser
 	public function __construct($start_index)
 	{
 		include_once('simplehtmldom_1_5/simple_html_dom.php');
-		include_once('getcurl.php');
+		include_once('getcurl.lib');
 		$this->start_index = $start_index;
 	}
 
